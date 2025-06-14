@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint": "vite lint",
     "preview": "vite preview",
     "prepare": "husky"
   },
@@ -34,7 +34,14 @@
     "vite": "^6.3.5"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint --fix"
+    "**/*.js?(x)": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "**/*.ts?(x)": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
 
