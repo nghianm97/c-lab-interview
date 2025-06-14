@@ -1,22 +1,13 @@
-# get the list of modified files
-files=$(git diff --cached --name-only)
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-# check if directory is modified
-
-has_changed=false
-
-for file in $files
-do
-    if [[ $file == *  ]]; then
-        # set has_changed flag to true
-        has_changed=true
-    fi
-done
-
-# run linters based on the modified modules
-
-if $has_changed; then
-    echo "Running ESLint..."
-    npx lint-staged
-    yarn lint
+echo "Running lint checks..."
+# Run lint and exit with error code if it fails
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "Linting failed! Fix the errors before committing."
+  exit 1
 fi
+
+# Run lint-staged as well
+npx lint-staged
