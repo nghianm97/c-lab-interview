@@ -1,8 +1,22 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+# get the list of modified files
+files=$(git diff --cached --name-only)
 
-echo "Running pre-commit hook..."
-npx lint-staged
-echo "Running lint..."
-npm run lint
-echo "Pre-commit hook completed."
+# check if directory is modified
+
+has_changed=false
+
+for file in $files
+do
+    if [[ $file == *  ]]; then
+        # set has_changed flag to true
+        has_changed=true
+    fi
+done
+
+# run linters based on the modified modules
+
+if $has_changed; then
+    echo "Running ESLint..."
+    npx lint-staged
+    yarn lint
+fi
